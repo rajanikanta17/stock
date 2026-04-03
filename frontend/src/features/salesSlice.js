@@ -3,20 +3,20 @@ import axiosInstance from "../lib/axios";
 import toast from 'react-hot-toast';
 
 const initialState = {
-  getallsales: null,
+  getallsales: [],
   isgetallsales: false,
   iscreatedsales: false,
-  editedsales:null,
-  searchdata:null
+  editedsales: null,
+  searchdata: []
   
 };
 
 
 export const CreateSales = createAsyncThunk(
-    'sales/createsales',
-  async (Category, { rejectWithValue }) => {
+  'sales/createsales',
+  async (salesData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("sales/createsales", Category, { withCredentials: true });
+      const response = await axiosInstance.post("sales/createsales", salesData, { withCredentials: true });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "sales creation failed");
@@ -68,7 +68,9 @@ export const EditSales = createAsyncThunk(
 export const searchsalesdata=createAsyncThunk(
   'sales/searchdata',async (query, { rejectWithValue }) => {
     try {
-      const response=await axiosInstance.get(`sales/searchdata?query=${query}`,query,{ withCredentials: true,})
+      const response = await axiosInstance.get(`sales/searchdata?query=${encodeURIComponent(query)}`, {
+        withCredentials: true,
+      });
       return response.data;
  
      
@@ -118,7 +120,9 @@ const salesSlice = createSlice({
       })
       .addCase( CreateSales .fulfilled, (state, action) => {
         state.iscreatedsales = false;
-        state.getallsales.push(action.payload);
+        if (action.payload?.sale) {
+          state.getallsales.unshift(action.payload.sale);
+        }
   
       })
       .addCase( CreateSales .rejected, (state, action) => {
@@ -128,7 +132,13 @@ const salesSlice = createSlice({
 
 
       .addCase(EditSales.fulfilled,(state,action)=>{
-        state.editedsales=action.payload
+        state.editedsales = action.payload;
+        const updatedSale = action.payload?.sale;
+        if (updatedSale?._id) {
+          state.getallsales = state.getallsales.map((sale) =>
+            sale._id === updatedSale._id ? updatedSale : sale
+          );
+        }
        
        
        })

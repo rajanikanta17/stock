@@ -14,9 +14,7 @@ import toast from "react-hot-toast";
 
 
 function Salespage() {
-  const {   getallsales, searchdata,
-    isgetallsales,  editedsales, iscreatedsales
-     } = useSelector(
+  const { getallsales, searchdata } = useSelector(
     (state) => state.sales
   );
 
@@ -40,9 +38,9 @@ function Salespage() {
 
 
   useEffect(() => {
-   dispatch(gettingallSales())
-  
-  }, [dispatch,  CreateSales,EditSales]);
+    dispatch(gettingallSales());
+    dispatch(gettingallproducts());
+  }, [dispatch]);
 
  
   useEffect(() => {
@@ -100,10 +98,23 @@ function Salespage() {
 
   const submitsales = async (event) => {
     event.preventDefault();
+
+    if (!name || !Product || !Payment || !paymentStatus || !Status || !quantity || !Price) {
+      toast.error("Please fill all sales fields");
+      return;
+    }
+
+    const parsedQuantity = Number(quantity);
+    const parsedPrice = Number(Price);
+
+    if (Number.isNaN(parsedQuantity) || Number.isNaN(parsedPrice) || parsedQuantity <= 0 || parsedPrice <= 0) {
+      toast.error("Quantity and price must be valid positive numbers");
+      return;
+    }
   
     const salesData = {
       customerName: name, 
-      products: { product: Product, quantity, price: Price }, 
+      products: { product: Product, quantity: parsedQuantity, price: parsedPrice }, 
       paymentMethod: Payment, 
       paymentStatus,
       status: Status
@@ -221,7 +232,7 @@ function Salespage() {
                   className="w-full h-10 px-2 border-2 rounded-lg mt-2"
                 >
                   <option value="">Select a Product</option>
-                  {getallproduct.map((product) => (
+                  {Array.isArray(getallproduct) && getallproduct.map((product) => (
                     <option key={product._id} value={product._id}>
                       {product.name}
                     </option>
@@ -339,7 +350,7 @@ function Salespage() {
 
                       <td className="px-3 py-2 border">
                         {sales?.paymentStatus
-                        || "hwllomd"}
+                        || "pending"}
                       </td>
 
                       <td className="px-4  py-2 border">

@@ -20,7 +20,7 @@ module.exports.createSale = async (req, res) => {
         return res.status(400).json({ 
             message: "Insufficient product quantity",
             available: productRecord.quantity,
-            requested: quantity
+        requested: products.quantity
         });
     }
 
