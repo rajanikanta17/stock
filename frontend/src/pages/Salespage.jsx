@@ -217,7 +217,7 @@ function Salespage() {
                 <label>Name</label>
                 <input
                   value={name}
-                  placeholder="Enter product name"
+                  placeholder="Enter customer name"
                   onChange={(e) => setName(e.target.value)}
                   type="text"
                   className="w-full h-10 px-2 border-2 rounded-lg mt-2"
