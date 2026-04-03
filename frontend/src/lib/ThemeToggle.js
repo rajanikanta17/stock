@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LuMoon } from "react-icons/lu";
 import { IoIosSunny } from "react-icons/io";
 
-const ThemeToggle = () => {
+const ThemeToggle = ({ className = "text-3xl" }) => {
   const getInitialTheme = () => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme === "light" || storedTheme === "dark") {
@@ -26,11 +26,11 @@ const ThemeToggle = () => {
   };
 
   return (
-    <button onClick={toggleTheme} aria-label="Toggle theme">
+    <button onClick={toggleTheme} aria-label="Toggle theme" type="button">
       {theme === "light" ? (
-        <LuMoon className="text-3xl" />
+        <LuMoon className={className} />
       ) : (
-        <IoIosSunny className="text-3xl text-orange-500" />
+        <IoIosSunny className={`${className} text-orange-500`} />
       )}
     </button>
   );

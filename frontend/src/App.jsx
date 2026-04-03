@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPages";
 import ServicePage from "./pages/ServicePage";
@@ -23,6 +24,17 @@ import ProtectedRoute from "./lib/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 
 function App() {
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const resolvedTheme = storedTheme === "light" || storedTheme === "dark"
+      ? storedTheme
+      : (prefersDark ? "dark" : "light");
+
+    document.documentElement.setAttribute("data-theme", resolvedTheme);
+    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  }, []);
+
   return (
     <Router>
       <div>

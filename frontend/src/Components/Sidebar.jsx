@@ -82,7 +82,7 @@ function Sidebar() {
   return (
     <aside className="sidebar-shell flex h-screen w-72 flex-col border-r border-slate-200 bg-white/90 p-5 shadow-xl backdrop-blur">
       <div className="sidebar-logo-box rounded-2xl border border-slate-200 bg-slate-50 p-3">
-        <img src={logo1} className='sidebar-logo-image mx-auto w-5/6 rounded-lg bg-white p-2' alt="inventory logo" />
+        <img src={logo1} className='sidebar-logo-image mx-auto w-2/3 rounded-lg bg-white p-2' alt="inventory logo" />
       </div>
 
       <div className="mt-6 rounded-2xl bg-gradient-to-r from-teal-700 to-cyan-700 px-4 py-3 text-white">

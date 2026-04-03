@@ -68,12 +68,19 @@ html[data-theme="dark"] .glass-card {
 
 /* Global fallback mapping so existing page utilities adapt in dark mode without rewriting every file. */
 html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-white\/80,
+html[data-theme="dark"] .bg-white\/90,
 html[data-theme="dark"] .bg-gray-50,
 html[data-theme="dark"] .bg-gray-100,
+html[data-theme="dark"] .bg-slate-50,
 html[data-theme="dark"] .bg-base-100,
 html[data-theme="dark"] .bg-base-300 {
 	background-color: var(--bg-surface) !important;
 	color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .bg-teal-50 {
+	background-color: rgba(20, 184, 166, 0.12) !important;
 }
 
 html[data-theme="dark"] .text-gray-900,
@@ -88,19 +95,29 @@ html[data-theme="dark"] .text-slate-700 {
 
 html[data-theme="dark"] .text-gray-600,
 html[data-theme="dark"] .text-gray-500,
+html[data-theme="dark"] .text-teal-700,
 html[data-theme="dark"] .text-slate-600,
 html[data-theme="dark"] .text-slate-500,
 html[data-theme="dark"] .text-slate-400 {
 	color: var(--text-muted) !important;
 }
 
+html[data-theme="dark"] .text-teal-600 {
+	color: #2dd4bf !important;
+}
+
 html[data-theme="dark"] .border-gray-100,
 html[data-theme="dark"] .border-gray-200,
 html[data-theme="dark"] .border-gray-300,
+html[data-theme="dark"] .border-teal-300,
 html[data-theme="dark"] .border-slate-100,
 html[data-theme="dark"] .border-slate-200,
 html[data-theme="dark"] .border-slate-300 {
 	border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .site-topbar {
+	background: rgba(11, 18, 32, 0.9) !important;
 }
 
 html[data-theme="dark"] input,
