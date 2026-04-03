@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--bg-page: #f3f7fb;
+	--bg-surface: #ffffff;
+	--bg-soft: #eef3f8;
+	--text-main: #0f172a;
+	--text-muted: #64748b;
+	--brand: #0f766e;
+	--brand-2: #0ea5a4;
+	--accent: #f59e0b;
+	--border-soft: #dbe4ee;
+}
+
+html[data-theme="dark"] {
+	--bg-page: #0b1220;
+	--bg-surface: #111a2b;
+	--bg-soft: #162239;
+	--text-main: #e2e8f0;
+	--text-muted: #94a3b8;
+	--brand: #22d3ee;
+	--brand-2: #14b8a6;
+	--accent: #fbbf24;
+	--border-soft: #24354f;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: "Outfit", sans-serif;
+	color: var(--text-main);
+	transition: background-color 0.25s ease, color 0.25s ease;
+	background:
+		radial-gradient(circle at 12% 10%, rgba(14, 165, 164, 0.12), transparent 42%),
+		radial-gradient(circle at 88% 92%, rgba(245, 158, 11, 0.12), transparent 35%),
+		var(--bg-page);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Space Grotesk", sans-serif;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+.glass-card {
+	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(8px);
+	border: 1px solid var(--border-soft);
+}
+
+html[data-theme="dark"] .glass-card {
+	background: rgba(17, 26, 43, 0.82);
+}
+
+/* Global fallback mapping so existing page utilities adapt in dark mode without rewriting every file. */
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-gray-50,
+html[data-theme="dark"] .bg-gray-100,
+html[data-theme="dark"] .bg-base-100,
+html[data-theme="dark"] .bg-base-300 {
+	background-color: var(--bg-surface) !important;
+	color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .text-gray-900,
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .text-gray-700,
+html[data-theme="dark"] .text-black,
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-700 {
+	color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .text-gray-600,
+html[data-theme="dark"] .text-gray-500,
+html[data-theme="dark"] .text-slate-600,
+html[data-theme="dark"] .text-slate-500,
+html[data-theme="dark"] .text-slate-400 {
+	color: var(--text-muted) !important;
+}
+
+html[data-theme="dark"] .border-gray-100,
+html[data-theme="dark"] .border-gray-200,
+html[data-theme="dark"] .border-gray-300,
+html[data-theme="dark"] .border-slate-100,
+html[data-theme="dark"] .border-slate-200,
+html[data-theme="dark"] .border-slate-300 {
+	border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+	background-color: var(--bg-soft) !important;
+	color: var(--text-main) !important;
+	border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] table,
+html[data-theme="dark"] th,
+html[data-theme="dark"] td {
+	border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .sidebar-shell {
+	background: rgba(11, 18, 32, 0.92) !important;
+	border-color: var(--border-soft) !important;
+	box-shadow: 0 20px 40px rgba(2, 8, 23, 0.4);
+}
+
+html[data-theme="dark"] .sidebar-logo-box {
+	background-color: #0f1a2f !important;
+	border-color: var(--border-soft) !important;
+}
+
+html[data-theme="dark"] .sidebar-logo-image {
+	background-color: #0b1220 !important;
+}
+
+html[data-theme="dark"] .sidebar-nav-item-idle {
+	color: var(--text-muted) !important;
+}
+
+html[data-theme="dark"] .sidebar-nav-item-idle:hover {
+	background-color: #1b2a46 !important;
+	color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .sidebar-nav-item-active {
+	background: linear-gradient(90deg, #0f766e, #0891b2) !important;
+	color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .sidebar-logout-btn {
+	color: var(--text-muted) !important;
+}
+
+html[data-theme="dark"] .sidebar-logout-btn:hover {
+	background-color: rgba(190, 24, 93, 0.18) !important;
+	color: #fda4af !important;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #94a3b8, #64748b);
+	border-radius: 999px;
+}
+
