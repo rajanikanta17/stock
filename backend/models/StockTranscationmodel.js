@@ -20,6 +20,10 @@ const StockTranscationSchema= new mongoose.Schema({
     type:Number,
     required:true
    },
+   balanceAfter:{
+    type:Number,
+    default:null
+   },
    transactionDate:{
     type:Date,
     default:Date.now

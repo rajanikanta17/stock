@@ -63,6 +63,7 @@ module.exports.createSale = async (req, res) => {
       type: "Stock-out",
       quantity: Number(products.quantity),
       supplier: productRecord.supplier || undefined,
+      balanceAfter: productRecord.quantity,
       transactionDate: new Date(),
     });
 

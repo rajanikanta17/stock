@@ -32,25 +32,31 @@ module.exports.createStockTransaction = async (req, res) => {
       return res.status(400).json({ success: false, message: "Quantity must be a valid positive number." });
     }
 
-    const productDoc = await Product.findById(product);
-    if (!productDoc) {
-      return res.status(404).json({ success: false, message: "Product not found." });
-    }
+    const update = type === "Stock-in"
+      ? { $inc: { quantity: parsedQuantity } }
+      : { $inc: { quantity: -parsedQuantity } };
 
-    if (type === "Stock-out" && productDoc.quantity < parsedQuantity) {
+    const filter = type === "Stock-out"
+      ? { _id: product, quantity: { $gte: parsedQuantity } }
+      : { _id: product };
+
+    const productDoc = await Product.findOneAndUpdate(filter, update, { new: true });
+
+    if (!productDoc) {
+      const existingProduct = await Product.findById(product).select("quantity");
+
+      if (!existingProduct) {
+        return res.status(404).json({ success: false, message: "Product not found." });
+      }
+
       return res.status(400).json({
         success: false,
         message: "Insufficient stock for stock-out transaction.",
-        available: productDoc.quantity,
+        available: existingProduct.quantity,
       });
     }
 
-    const nextQuantity = type === "Stock-in"
-      ? productDoc.quantity + parsedQuantity
-      : productDoc.quantity - parsedQuantity;
-
-    productDoc.quantity = nextQuantity;
-    await productDoc.save();
+    const nextQuantity = productDoc.quantity;
 
     await upsertInventoryQuantity(product, nextQuantity);
 
@@ -58,7 +64,8 @@ module.exports.createStockTransaction = async (req, res) => {
       product,
       type,
       quantity: parsedQuantity,
-      supplier,
+      supplier: supplier || undefined,
+      balanceAfter: nextQuantity,
     });
 
     await newTransaction.save();

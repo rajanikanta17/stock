@@ -79,7 +79,10 @@ const[query,setquery]=useState("");
       .unwrap()
       .then(() => {
         toast.success("Stock added successfully");
+        dispatch(gettingallproducts());
+        dispatch(getAllStockTransactions());
         resetForm();
+        setIsFormVisible(false);
       })
       .catch(() => {
         toast.error("Stock add unsuccessful");
@@ -106,6 +109,23 @@ const[query,setquery]=useState("");
       const matchedSupplier = getallSupplier?.find((s) => s._id === stockItem.supplier);
       return matchedSupplier?.name || "N/A";
     }
+    return "N/A";
+  };
+
+  const getCurrentStock = (stockItem) => {
+    if (stockItem?.balanceAfter !== undefined && stockItem?.balanceAfter !== null) {
+      return stockItem.balanceAfter;
+    }
+
+    if (typeof stockItem?.product === "object" && stockItem?.product?.quantity !== undefined) {
+      return stockItem.product.quantity;
+    }
+
+    if (typeof stockItem?.product === "string") {
+      const matchedProduct = getallproduct?.find((p) => p._id === stockItem.product);
+      return matchedProduct?.quantity ?? "N/A";
+    }
+
     return "N/A";
   };
 
@@ -234,7 +254,8 @@ const[query,setquery]=useState("");
                   <th className="px-3 py-2 border">Date</th>
                   <th className="px-3 py-2 border">Product</th>
                   <th className="px-3 py-2 border">Type</th>
-                  <th className="px-3 py-2 border">Quantity</th>
+                  <th className="px-3 py-2 border">Inflow / Outflow</th>
+                  <th className="px-3 py-2 border">Current Stock</th>
                   <th className="px-3 py-2 border">Supplier</th>
 
               
@@ -254,7 +275,12 @@ const[query,setquery]=useState("");
                       <td className="px-3 py-2 border">
                         {Stocks.type}
                       </td>
-                      <td className="px-3 py-2 border">{Stocks.quantity}</td>
+                      <td className={`px-3 py-2 border font-semibold ${
+                        Stocks?.type === "Stock-in" ? "text-green-600" : "text-red-600"
+                      }`}>
+                        {Stocks?.type === "Stock-in" ? `+${Stocks.quantity}` : `-${Stocks.quantity}`}
+                      </td>
+                      <td className="px-3 py-2 border">{getCurrentStock(Stocks)}</td>
                       <td  className="px-3 py-2 border">{getSupplierName(Stocks)}</td>
                     </tr>
                   ))
