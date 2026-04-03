@@ -5,6 +5,7 @@ import { signup } from "../features/authSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const { isUserSignup } = useSelector((state) => state.auth);
@@ -36,10 +37,18 @@ function SignupPage() {
     dispatch(signup(data))
       .unwrap()
       .then(() => {
+        toast.success("Signup successful");
         navigator("/StaffDashboard");
       })
       .catch((error) => {
-        console.error("Error in Signup:", error);
+        const message = typeof error === "string" ? error : "Signup failed";
+
+        if (message.toLowerCase().includes("already registered")) {
+          toast.error("User is already registered");
+          return;
+        }
+
+        toast.error(message);
       });
   };
 

@@ -2,15 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Gettopproduct from "../lib/Gettopproduct";
 import TopNavbar from "../Components/TopNavbar";
-import { LuUsers, LuClock, LuActivity } from "react-icons/lu"; // Icons for activity logs
-import { getrecentActivityLogs } from "../features/activitySlice";
+import { LuUsers } from "react-icons/lu";
 import { staffUser, managerUser, adminUser } from "../features/authSlice";
-import FormattedTime from "../lib/FormattedTime";
-import socket from "../lib/socket";
 
 function Dashboardpage() {
   const { staffuser, manageruser, adminuser } = useSelector((state) => state.auth);
-  const { recentuser } = useSelector((state) => state.activity);
   const dispatch = useDispatch();
 
   const userCards = [
@@ -38,17 +34,6 @@ function Dashboardpage() {
     dispatch(staffUser());
     dispatch(managerUser());
     dispatch(adminUser());
-    dispatch(getrecentActivityLogs());
-
-    // Listen for new activity logs
-    socket.on("newActivityLog", (newLog) => {
-      console.log("New activity log:", newLog);
-      // Optionally, update the UI or refetch logs
-    });
-
-    return () => {
-      socket.off("newActivityLog"); // Clean up the listener
-    };
   }, [dispatch]);
 
   return (
@@ -76,36 +61,6 @@ function Dashboardpage() {
 
         <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-4">
           <Gettopproduct className="mt-2" />
-        </div>
-      </div>
-
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-bold mb-6">Recent Activity</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentuser?.length > 0 ? (
-            recentuser.map((logs) => (
-              <div
-                key={logs._id}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:shadow-md"
-              >
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="rounded-full bg-cyan-100 p-3">
-                    <LuActivity className="text-2xl text-cyan-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold">{logs.userId.name || "Unknown User"}</h2>
-                    <p className="text-sm text-slate-500">{logs.action}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-slate-600">
-                  <LuClock className="text-slate-500" />
-                  <FormattedTime timestamp={logs.createdAt} />
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-slate-500">No recent activity logs found.</p>
-          )}
         </div>
       </div>
     </div>

@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TopNavbar from "../Components/TopNavbar";
-import { IoMdAdd } from "react-icons/io";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { TiDelete } from "react-icons/ti";
 import image from "../images/user.png";
@@ -13,7 +11,7 @@ import {
   updateUserRole
 } from "../features/authSlice";
 import toast from "react-hot-toast";
-import  UserRoleChart from '../lib/Usersgraph'
+import UserRoleChart from "../lib/Usersgraph";
 
 function Userstatus() {
   const { staffuser, manageruser, adminuser } = useSelector((state) => state.auth);
@@ -60,94 +58,161 @@ function Userstatus() {
   };
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <TopNavbar />
-      <div className="flex">
-      <div className=" bg-base-100 mt-10 ml-10 w-72 overflow-auto rounded-lg">
-        <div className=" bg-base-100 p-4 rounded-lg shadow-md mb-4">
-          <h2 className="text-lg bg-base-100 font-semibold mb-2">Manager</h2>
-          {manageruser?.length > 0 ? (
-            manageruser.map((user, index) => (
-              <div key={index} className="flex bg-base-100 items-center space-x-4 p-2 border-b">
-                <img src={user?.ProfilePic||image} alt="User" className="w-10 bg-base-100 h-10 rounded-full" />
-                <div className="bg-base-100">
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-gray-600 text-sm">{user.email}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handlePromote(user._id, "admin")}
-                    className="rounded-md bg-indigo-600 px-2 py-1 text-xs text-white"
-                  >
-                    Promote Admin
-                  </button>
-                  <TiDelete onClick={()=>handleremove(user._id)} className="text-red-600 text-2xl"/>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 bg-base-100">No users available.</p>
-          )}
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Admin</p>
+            <h1 className="text-2xl font-semibold">User Status</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Manage roles, access, and promotions.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              Managers: {manageruser?.length || 0}
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              Admins: {adminuser?.length || 0}
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              Staff: {staffuser?.length || 0}
+            </div>
+          </div>
         </div>
 
-        <div className="bg-base-100 p-4 rounded-lg shadow-md mb-4">
-          <h2 className="text-lg bg-base-100 font-semibold mb-2">Admin User</h2>
-          {adminuser?.length > 0 ? (
-            adminuser.map((user, index) => (
-              <div key={index} className="flex bg-base-100 items-center space-x-4 p-2 border-b">
-                <img src={user?.ProfilePic||image} alt="User" className="w-10 h-10 bg-base-100 rounded-full" />
-                <div className="bg-base-100">
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-gray-600 text-sm">{user.email}</p>
-                </div>
-                <div className="text-xs font-medium text-emerald-700">Admin</div>
-              
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div className="space-y-6">
+            <section className="rounded-2xl border border-slate-200 bg-white/90 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+              <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                <h2 className="text-base font-semibold">Managers</h2>
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {manageruser?.length || 0}
+                </span>
+              </header>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                {manageruser?.length > 0 ? (
+                  manageruser.map((user, index) => (
+                    <div key={index} className="flex flex-wrap items-center gap-4 px-5 py-4">
+                      <img
+                        src={user?.ProfilePic || image}
+                        alt={user?.name || "User"}
+                        className="h-12 w-12 rounded-full border border-slate-200 object-cover dark:border-slate-700"
+                      />
+                      <div className="min-w-[160px]">
+                        <p className="font-medium">{user.name}</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{user.email}</p>
+                      </div>
+                      <div className="ml-auto flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handlePromote(user._id, "admin")}
+                          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                        >
+                          Promote Admin
+                        </button>
+                        <TiDelete
+                          onClick={() => handleremove(user._id)}
+                          className="text-2xl text-rose-500 transition hover:text-rose-600"
+                        />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-5 py-6 text-sm text-slate-500 dark:text-slate-400">No users available.</p>
+                )}
               </div>
-            ))
-          ) : (
-            <p className="text-gray-500 bg-base-100">No users available.</p>
-          )}
-        </div>
+            </section>
 
-        <div className=" bg-base-100 p-4 rounded-lg shadow-md mb-4">
-          <h2 className="text-lg bg-base-100 font-semibold mb-2">Staff User</h2>
-          {staffuser?.length > 0 ? (
-            staffuser.map((user, index) => (
-              <div key={index} className="flex bg-base-100 items-center space-x-4 p-2 border-b">
-                <img src={user?.ProfilePic||image} alt="User" className="w-10 h-10  bg-base-100 rounded-full" />
-                <div className="bg-base-100">
-                  <p className="font-medium  bg-base-100">{user.name}</p>
-                  <p className=" bg-base-100 text-sm">{user.email}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handlePromote(user._id, "manager")}
-                    className="rounded-md bg-cyan-700 px-2 py-1 text-xs text-white"
-                  >
-                    Promote Manager
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handlePromote(user._id, "admin")}
-                    className="rounded-md bg-indigo-600 px-2 py-1 text-xs text-white"
-                  >
-                    Promote Admin
-                  </button>
-                  <TiDelete onClick={()=>handleremove(user._id)} className="text-red-600 text-2xl" />
-                </div>
+            <section className="rounded-2xl border border-slate-200 bg-white/90 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+              <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                <h2 className="text-base font-semibold">Admin Users</h2>
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {adminuser?.length || 0}
+                </span>
+              </header>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                {adminuser?.length > 0 ? (
+                  adminuser.map((user, index) => (
+                    <div key={index} className="flex flex-wrap items-center gap-4 px-5 py-4">
+                      <img
+                        src={user?.ProfilePic || image}
+                        alt={user?.name || "User"}
+                        className="h-12 w-12 rounded-full border border-slate-200 object-cover dark:border-slate-700"
+                      />
+                      <div className="min-w-[160px]">
+                        <p className="font-medium">{user.name}</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{user.email}</p>
+                      </div>
+                      <div className="ml-auto rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                        Admin
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-5 py-6 text-sm text-slate-500 dark:text-slate-400">No users available.</p>
+                )}
               </div>
-            ))
-          ) : (
-            <p className="text-gray-500 bg-base-100">No users available.</p>
-          )}
+            </section>
+
+            <section className="rounded-2xl border border-slate-200 bg-white/90 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+              <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                <h2 className="text-base font-semibold">Staff Users</h2>
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {staffuser?.length || 0}
+                </span>
+              </header>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                {staffuser?.length > 0 ? (
+                  staffuser.map((user, index) => (
+                    <div key={index} className="flex flex-wrap items-center gap-4 px-5 py-4">
+                      <img
+                        src={user?.ProfilePic || image}
+                        alt={user?.name || "User"}
+                        className="h-12 w-12 rounded-full border border-slate-200 object-cover dark:border-slate-700"
+                      />
+                      <div className="min-w-[160px]">
+                        <p className="font-medium">{user.name}</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{user.email}</p>
+                      </div>
+                      <div className="ml-auto flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handlePromote(user._id, "manager")}
+                          className="rounded-lg bg-cyan-700 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-cyan-600"
+                        >
+                          Promote Manager
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handlePromote(user._id, "admin")}
+                          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                        >
+                          Promote Admin
+                        </button>
+                        <TiDelete
+                          onClick={() => handleremove(user._id)}
+                          className="text-2xl text-rose-500 transition hover:text-rose-600"
+                        />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-5 py-6 text-sm text-slate-500 dark:text-slate-400">No users available.</p>
+                )}
+              </div>
+            </section>
+          </div>
+
+          <aside className="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+            <h3 className="text-base font-semibold">Role Distribution</h3>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Current breakdown of user roles.</p>
+            <div className="mt-6">
+              <UserRoleChart className="h-72 w-full" />
+            </div>
+          </aside>
         </div>
-      </div>
-<UserRoleChart className="ml-10 "/>
       </div>
     </div>
-  
   );
 }
 

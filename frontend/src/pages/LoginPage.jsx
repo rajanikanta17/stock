@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { login } from "../features/authSlice";
+import toast from "react-hot-toast";
 
 function LoginPage() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function LoginPage() {
       .unwrap()
       .then((payload) => {
         const role = payload?.user?.role;
+        toast.success("Login successful");
 
         if (role === "staff") {
           navigator("/StaffDashboard");
@@ -41,7 +43,21 @@ function LoginPage() {
         }
       })
       .catch((error) => {
-        console.error("Error in Login:", error);
+        const message = typeof error === "string" ? error : "Login failed";
+        const normalized = message.toLowerCase();
+
+        if (
+          normalized.includes("does not exist") ||
+          normalized.includes("no user") ||
+          normalized.includes("password mismatch") ||
+          normalized.includes("invalid credentials") ||
+          normalized.includes("user and password mismatch")
+        ) {
+          toast.error("User and password mismatch");
+          return;
+        }
+
+        toast.error(message);
       });
   };
 

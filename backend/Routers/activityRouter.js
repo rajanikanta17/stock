@@ -43,7 +43,7 @@ module.exports = (app) => {
 
   router.get('/getAllLogs', async (req, res) => {
     try {
-      const logs = await ActivityLog.find().populate("userId");
+      const logs = await ActivityLog.find().populate("userId").sort({ createdAt: -1 });
       res.status(200).json(logs);
     } catch (error) {
       console.error("Failed to fetch logs:", error);
@@ -67,7 +67,7 @@ module.exports = (app) => {
   router.get('/getLogs/:userid', async (req, res) => {
     const { userid } = req.params;
     try {
-      const logs = await ActivityLog.find({ userId: userid });
+      const logs = await ActivityLog.find({ userId: userid }).sort({ createdAt: -1 });
       res.status(200).json(logs);
     } catch (error) {
       console.error("Failed to fetch logs for user:", userid, error);

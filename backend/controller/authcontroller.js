@@ -13,7 +13,7 @@ module.exports.signup = async (req, res) => {
   
     const duplicatedUser = await User.findOne({ email });
     if (duplicatedUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(409).json({ message: "User is already registered" });
     }
 
 
@@ -64,7 +64,7 @@ module.exports.signup = async (req, res) => {
 
   } catch (error) {
     console.error("Error during signup:", error.message);
-    res.status(400).json({ error: "Error during signup: " + error.message });
+    res.status(400).json({ message: "Error during signup: " + error.message });
   }
 };
 
@@ -79,7 +79,7 @@ module.exports.login=async(req,res)=>{
 
      if(!duplicatedUser){
 
-   return res.status(400).json({error:"No user found"})
+   return res.status(404).json({message:"User and password mismatch"})
      }
 
 
@@ -87,7 +87,7 @@ module.exports.login=async(req,res)=>{
 
 
       if(!hasedpassword){
-            return res.status(400).json({message:'Invalid credentials'})
+        return res.status(401).json({message:'User and password mismatch'})
         }
 
         const token=await generateToken(duplicatedUser,res)
@@ -121,7 +121,7 @@ module.exports.login=async(req,res)=>{
 
     } catch (error) {
   res.status(400).json({
-    error:"Error in login to the page"
+    message:"Error in login to the page"
   })
 
         

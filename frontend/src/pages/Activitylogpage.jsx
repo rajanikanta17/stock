@@ -30,7 +30,10 @@ function Activitylogpage() {
   }, [dispatch, Authuser?.id]);
 
   useEffect(() => {
-    setLogs(activityLogs);
+    const sortedLogs = [...(activityLogs || [])].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setLogs(sortedLogs);
   }, [activityLogs]);
 
   const indexOfLastLog = currentPage * logsPerPage;
