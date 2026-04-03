@@ -9,7 +9,6 @@ import ManagerDashboard from "./pages/ManagerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import Productpage from "./pages/Productpage";
-import Orderpage from "./pages/Orderpage";
 import Salespage from "./pages/Salespage";
 import StockTransaction from "./pages/StockTransaction";
 import Categorypage from "./pages/Categorypage";
@@ -58,10 +57,6 @@ function App() {
               element={<ProtectedRoute element={<Productpage />} />}
             />
             <Route
-              path="order"
-              element={<ProtectedRoute element={<Orderpage />} />}
-            />
-            <Route
               path="sales"
               element={<ProtectedRoute element={<Salespage />} />}
             />
@@ -108,10 +103,6 @@ function App() {
               element={<ProtectedRoute element={<Productpage />} />}
             />
             <Route
-              path="order"
-              element={<ProtectedRoute element={<Orderpage />} />}
-            />
-            <Route
               path="sales"
               element={<ProtectedRoute element={<Salespage />} />}
             />
@@ -156,10 +147,6 @@ function App() {
             <Route
               path="product"
               element={<ProtectedRoute element={<Productpage />} />}
-            />
-            <Route
-              path="order"
-              element={<ProtectedRoute element={<Orderpage />} />}
             />
             <Route
               path="sales"

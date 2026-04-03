@@ -1,6 +1,7 @@
 const Sale = require("../models/Salesmodel");
 const ProductModel = require('../models/Productmodel');
 const Inventory = require('../models/Inventorymodel');
+const StockTransaction = require('../models/StockTranscationmodel');
 
 const upsertInventoryQuantity = async (productId, quantity) => {
   let inventory = await Inventory.findOne({ product: productId });
@@ -56,6 +57,14 @@ module.exports.createSale = async (req, res) => {
     });
 
     await newSale.save();
+
+    await StockTransaction.create({
+      product: products.product,
+      type: "Stock-out",
+      quantity: Number(products.quantity),
+      supplier: productRecord.supplier || undefined,
+      transactionDate: new Date(),
+    });
 
    
     

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineProduct } from "react-icons/ai";
 import { RiStockLine } from "react-icons/ri";
-import { FiLogOut, FiShoppingCart } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { MdPointOfSale, MdOutlineCategory } from "react-icons/md";
 import { TfiSupport } from "react-icons/tfi";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -34,7 +34,6 @@ function Sidebar() {
       { label: "Activity Log", icon: <RxActivityLog className="text-lg" />, to: `${basePath}/activity-log` },
       { label: "Supplier", icon: <TfiSupport className="text-lg" />, to: `${basePath}/supplier` },
       { label: "Sales", icon: <MdPointOfSale className="text-lg" />, to: `${basePath}/sales` },
-      { label: "Order", icon: <FiShoppingCart className="text-lg" />, to: `${basePath}/order` },
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
       { label: "Notifications", icon: <IoNotificationsOutline className="text-lg" />, to: `${basePath}/NotificationPageRead` },
       { label: "Category", icon: <MdOutlineCategory className="text-lg" />, to: `${basePath}/category` },
@@ -44,7 +43,6 @@ function Sidebar() {
       { label: "Activity Log", icon: <RxActivityLog className="text-lg" />, to: `${basePath}/activity-log` },
       { label: "Supplier", icon: <TfiSupport className="text-lg" />, to: `${basePath}/supplier` },
       { label: "Sales", icon: <MdPointOfSale className="text-lg" />, to: `${basePath}/sales` },
-      { label: "Order", icon: <FiShoppingCart className="text-lg" />, to: `${basePath}/order` },
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
       { label: "Create Notifications", icon: <IoNotificationsOutline className="text-lg" />, to: `${basePath}/notifications` },
       { label: "Category", icon: <MdOutlineCategory className="text-lg" />, to: `${basePath}/category` },
@@ -53,7 +51,6 @@ function Sidebar() {
     staff: [
       { label: "Product", icon: <AiOutlineProduct className="text-lg" />, to: `${basePath}/product` },
       { label: "Sales", icon: <MdPointOfSale className="text-lg" />, to: `${basePath}/sales` },
-      { label: "Order", icon: <FiShoppingCart className="text-lg" />, to: `${basePath}/order` },
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
       { label: "Notifications", icon: <IoNotificationsOutline className="text-lg" />, to: `${basePath}/NotificationPageRead` },
     ],

@@ -96,7 +96,10 @@ module.exports.getStockTransactionsByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    const transactions = await StockTransaction.find({ product: productId }).populate('Supplier').sort({ transactionDate: -1 });
+    const transactions = await StockTransaction.find({ product: productId })
+      .populate('product')
+      .populate('supplier')
+      .sort({ transactionDate: -1 });
 
     if (!transactions || transactions.length === 0) {
       return res.status(404).json({ success: false, message: "No transactions found for this product." });
@@ -134,11 +137,13 @@ module.exports.searchStocks = async (req, res) => {
     }
 
     const stocks = await StockTransaction.find({})
-      .populate('product') 
+      .populate('product')
+      .populate('supplier')
       .then((transactions) => {
         return transactions.filter((transaction) => 
           transaction.type.toLowerCase().includes(query.toLowerCase()) ||
-          (transaction.product && transaction.product.name.toLowerCase().includes(query.toLowerCase()))
+          (transaction.product && transaction.product.name.toLowerCase().includes(query.toLowerCase())) ||
+          (transaction.supplier && transaction.supplier.name.toLowerCase().includes(query.toLowerCase()))
         );
       });
 
