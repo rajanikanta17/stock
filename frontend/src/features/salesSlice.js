@@ -115,17 +115,17 @@ const salesSlice = createSlice({
 
 
 
-      .addCase( CreateSales .pending, (state) => {
+      .addCase( CreateSales.pending, (state) => {
         state.iscreatedsales = true;
       })
-      .addCase( CreateSales .fulfilled, (state, action) => {
+      .addCase( CreateSales.fulfilled, (state, action) => {
         state.iscreatedsales = false;
         if (action.payload?.sale) {
           state.getallsales.unshift(action.payload.sale);
         }
   
       })
-      .addCase( CreateSales .rejected, (state, action) => {
+      .addCase( CreateSales.rejected, (state, action) => {
         state.iscreatedsales = false;
 
       })

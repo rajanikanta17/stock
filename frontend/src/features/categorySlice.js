@@ -117,7 +117,7 @@ const categorySlice = createSlice({
     
       .addCase(RemoveCategory.fulfilled, (state, action) => {
         state.iscategoryremove = true;
-        state.getallCategory= state.getallCategory.filter(category => category ._id !== action.meta.arg);
+        state.getallCategory= state.getallCategory.filter(category => category._id !== action.meta.arg);
    
       })
       

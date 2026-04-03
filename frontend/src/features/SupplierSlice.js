@@ -104,14 +104,14 @@ const supplierSlice = createSlice({
   extraReducers: (builder) => {
     builder
  
-      .addCase(CreateSupplier .pending, (state) => {
+      .addCase(CreateSupplier.pending, (state) => {
         state.isSupplieradd = true;
       })
-      .addCase(CreateSupplier .fulfilled, (state, action) => {
+      .addCase(CreateSupplier.fulfilled, (state, action) => {
         state.isSupplieradd= false;
         toast.success("Supplier created successfully");
       })
-      .addCase(CreateSupplier .rejected, (state, action) => {
+      .addCase(CreateSupplier.rejected, (state, action) => {
         state.isSupplieradd= false;
         toast.error('Error creating Supplier');
       })
@@ -128,7 +128,7 @@ const supplierSlice = createSlice({
       
       
       .addCase(gettingallSupplier.rejected, (state, action) => {
-        state. isallSupplier = false;
+        state.isallSupplier = false;
 
       })
 

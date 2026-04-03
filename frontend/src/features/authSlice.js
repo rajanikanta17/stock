@@ -232,7 +232,7 @@ const authSlice = createSlice({
 
       .addCase(staffUser.fulfilled, (state, action) => {
      
-        state. staffuser = action.payload
+        state.staffuser = action.payload
 
       })
       
