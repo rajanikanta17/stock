@@ -33,7 +33,7 @@ function StockTransaction() {
   const dispatch = useDispatch();
 const[query,setquery]=useState("");
   const [product, setproduct] = useState("");
-  const [type, settype] = useState("");
+  const [type, settype] = useState("Stock-in");
   const [quantity, setquantity] = useState("");
   const [supplier, setsupplier] = useState("");
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -66,7 +66,7 @@ const[query,setquery]=useState("");
 
   const resetForm = () => {
     setproduct("");
-    settype("");
+    settype("Stock-in");
     setquantity("");
     setsupplier("");
   };
@@ -232,13 +232,13 @@ const[query,setquery]=useState("");
                        <td className="px-3 py-2 border">
                         <FormattedTime  timestamp={Stocks.transactionDate}/>
                        </td>
-                      <td  className="px-3 py-2 border">box</td>
+                      <td  className="px-3 py-2 border">{Stocks?.product?.name || "No Product"}</td>
                      
                       <td className="px-3 py-2 border">
                         {Stocks.type}
                       </td>
                       <td className="px-3 py-2 border">{Stocks.quantity}</td>
-                      <td  className="px-3 py-2 border">Abebe</td>
+                      <td  className="px-3 py-2 border">{Stocks?.supplier?.name || "N/A"}</td>
                     </tr>
                   ))
                 ) : (

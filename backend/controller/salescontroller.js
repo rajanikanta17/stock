@@ -1,5 +1,22 @@
 const Sale = require("../models/Salesmodel");
 const ProductModel = require('../models/Productmodel');
+const Inventory = require('../models/Inventorymodel');
+
+const upsertInventoryQuantity = async (productId, quantity) => {
+  let inventory = await Inventory.findOne({ product: productId });
+
+  if (!inventory) {
+    inventory = new Inventory({
+      product: productId,
+      quantity,
+    });
+  } else {
+    inventory.quantity = quantity;
+    inventory.lastUpdated = Date.now();
+  }
+
+  await inventory.save();
+};
 
 
 module.exports.createSale = async (req, res) => {
@@ -26,6 +43,7 @@ module.exports.createSale = async (req, res) => {
 
     productRecord.quantity -= products.quantity;
     await productRecord.save();
+    await upsertInventoryQuantity(products.product, productRecord.quantity);
 
 
     const newSale = new Sale({

@@ -85,7 +85,9 @@ const stocktransactionSlice = createSlice({
       })
       .addCase(createStockTransaction .fulfilled, (state, action) => {
         state.iscreatedStocks = false;
-        state.getallStocks.push(action.payload);
+        if (action.payload?.transaction) {
+          state.getallStocks.unshift(action.payload.transaction);
+        }
 
       })
       .addCase(createStockTransaction .rejected, (state, action) => {
