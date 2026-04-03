@@ -145,7 +145,7 @@ export const adminUser=createAsyncThunk('auth/adminuser',async(_,{rejectWithValu
 export const removeusers=createAsyncThunk("auth/removeuser",async(UserId,{rejectWithValue})=>{
   try {
 
-    const response=await axiosInstance.delete(`auth/removeuser/${UserId}`,UserId,{ withCredentials: true });
+    const response=await axiosInstance.delete(`auth/removeuser/${UserId}`, { withCredentials: true });
 
     return response.data
 
@@ -153,6 +153,23 @@ export const removeusers=createAsyncThunk("auth/removeuser",async(UserId,{reject
      return rejectWithValue(error.response?.data?.message || 'Failed to delete  user');
   }
 })
+
+export const updateUserRole = createAsyncThunk(
+  "auth/updateUserRole",
+  async ({ UserId, role }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.patch(
+        `auth/updateRole/${UserId}`,
+        { role },
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Failed to update user role");
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -267,6 +284,16 @@ const authSlice = createSlice({
       .addCase(removeusers.rejected,(state,action)=>{
       
       
+      })
+
+      .addCase(updateUserRole.fulfilled, (state, action) => {
+
+      })
+
+
+      .addCase(updateUserRole.rejected,(state,action)=>{
+
+
       })
     
 

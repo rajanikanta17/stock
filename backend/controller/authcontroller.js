@@ -8,7 +8,7 @@ const logActivity = require('../libs/logger');
 
 module.exports.signup = async (req, res) => {
   try {
-    const { name, email, password, ProfilePic, role } = req.body;
+    const { name, email, password, ProfilePic } = req.body;
 
   
     const duplicatedUser = await User.findOne({ email });
@@ -28,7 +28,7 @@ module.exports.signup = async (req, res) => {
       email,
       password: hashedpassword,
       ProfilePic:"",
-      role,
+      role: "staff",
     });
 
 
@@ -153,13 +153,38 @@ module.exports.updateProfile = async (req, res) => {
       return res.status(400).json({ message: "User not authenticated" });
     }
 
+    if (!Cloundinary.hasCloudinaryConfig) {
+      return res.status(500).json({
+        message: "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to backend/.env",
+      });
+    }
+
     if (ProfilePic) {
       try {
-       
-        const uploadResponse = await Cloundinary.uploader.upload(ProfilePic, {
-          folder: "profile_inventory_system", 
-          upload_preset: "upload", 
-        });
+        const uploadOptions = {
+          folder: Cloundinary.profileUploadFolder,
+        };
+
+        if (Cloundinary.uploadPreset) {
+          uploadOptions.upload_preset = Cloundinary.uploadPreset;
+        }
+
+        let uploadResponse;
+        try {
+          uploadResponse = await Cloundinary.uploader.upload(ProfilePic, uploadOptions);
+        } catch (uploadError) {
+          const isPresetError =
+            uploadError?.http_code === 400 &&
+            typeof uploadError?.message === "string" &&
+            uploadError.message.toLowerCase().includes("upload preset not found");
+
+          if (!isPresetError) {
+            throw uploadError;
+          }
+
+          const { upload_preset, ...fallbackOptions } = uploadOptions;
+          uploadResponse = await Cloundinary.uploader.upload(ProfilePic, fallbackOptions);
+        }
 
         const updatedUser = await User.findOneAndUpdate(
           { _id: userId },
@@ -238,12 +263,81 @@ module.exports.adminuser = async (req, res) => {
 
 
 
+module.exports.updateUserRole = async (req, res) => {
+  try {
+    const { UserId } = req.params;
+    const { role: newRole } = req.body;
+
+    if (!UserId || !newRole) {
+      return res.status(400).json({ message: "User ID and role are required" });
+    }
+
+    if (!["manager", "admin"].includes(newRole)) {
+      return res.status(400).json({ message: "Invalid target role" });
+    }
+
+    const targetUser = await User.findById(UserId);
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (targetUser.role === "staff" && !["manager", "admin"].includes(newRole)) {
+      return res.status(400).json({ message: "Staff can only be promoted to manager or admin" });
+    }
+
+    if (targetUser.role === "manager" && newRole !== "admin") {
+      return res.status(400).json({ message: "Manager can only be promoted to admin" });
+    }
+
+    if (targetUser.role === "admin") {
+      return res.status(400).json({ message: "Admin role cannot be changed here" });
+    }
+
+    targetUser.role = newRole;
+    await targetUser.save();
+
+    await logActivity({
+      action: "User Role Updated",
+      description: `Role updated to ${newRole} for ${targetUser.email}`,
+      entity: "user",
+      entityId: targetUser._id,
+      userId: req.user?._id,
+      ipAddress: req.ip,
+    });
+
+    return res.status(200).json({
+      message: "User role updated successfully",
+      user: {
+        _id: targetUser._id,
+        name: targetUser.name,
+        email: targetUser.email,
+        role: targetUser.role,
+        ProfilePic: targetUser.ProfilePic,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports.removeuser = async (req, res) => {
   try {
     const { UserId } = req.params;
 
     if (!UserId) {
       return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const existingUser = await User.findById(UserId);
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (existingUser.role === "admin") {
+      return res.status(403).json({ message: "Admin users cannot be deleted" });
     }
 
     const deleteUser = await User.findByIdAndDelete(UserId);

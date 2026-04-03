@@ -9,7 +9,8 @@ import {
   staffUser,
   managerUser,
   adminUser,
-  removeusers
+  removeusers,
+  updateUserRole
 } from "../features/authSlice";
 import toast from "react-hot-toast";
 import  UserRoleChart from '../lib/Usersgraph'
@@ -23,7 +24,7 @@ function Userstatus() {
     dispatch(staffUser());
     dispatch(managerUser());
     dispatch(adminUser());
-  }, [dispatch,removeusers]);
+  }, [dispatch]);
 
   
 
@@ -31,14 +32,32 @@ function Userstatus() {
   const handleremove=async(UserId)=>{
 
     dispatch(removeusers(UserId))
+    .unwrap()
     .then(()=>{
+      dispatch(staffUser());
+      dispatch(managerUser());
+      dispatch(adminUser());
       toast.success("user remove successffully")
     })
     .catch((err)=>{
-      toast.error("error in remove user")
+      toast.error(err || "error in remove user")
     })
 
   }
+
+  const handlePromote = async (UserId, role) => {
+    dispatch(updateUserRole({ UserId, role }))
+      .unwrap()
+      .then(() => {
+        dispatch(staffUser());
+        dispatch(managerUser());
+        dispatch(adminUser());
+        toast.success(`User promoted to ${role}`);
+      })
+      .catch((err) => {
+        toast.error(err || "error in role update");
+      });
+  };
 
   return (
     <div className="min-h-screen bg-base-100">
@@ -55,7 +74,16 @@ function Userstatus() {
                   <p className="font-medium">{user.name}</p>
                   <p className="text-gray-600 text-sm">{user.email}</p>
                 </div>
-                <div><TiDelete  onClick={()=>handleremove( user._id)}  className="text-red-600 text-2xl"/></div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePromote(user._id, "admin")}
+                    className="rounded-md bg-indigo-600 px-2 py-1 text-xs text-white"
+                  >
+                    Promote Admin
+                  </button>
+                  <TiDelete onClick={()=>handleremove(user._id)} className="text-red-600 text-2xl"/>
+                </div>
               </div>
             ))
           ) : (
@@ -73,7 +101,7 @@ function Userstatus() {
                   <p className="font-medium">{user.name}</p>
                   <p className="text-gray-600 text-sm">{user.email}</p>
                 </div>
-                <div><TiDelete  onClick={()=>handleremove( user._id)} className="text-red-600 text-2xl" /></div>
+                <div className="text-xs font-medium text-emerald-700">Admin</div>
               
               </div>
             ))
@@ -92,7 +120,23 @@ function Userstatus() {
                   <p className="font-medium  bg-base-100">{user.name}</p>
                   <p className=" bg-base-100 text-sm">{user.email}</p>
                 </div>
-                <div><TiDelete onClick={()=>handleremove( user._id)} className="text-red-600 text-2xl" /></div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePromote(user._id, "manager")}
+                    className="rounded-md bg-cyan-700 px-2 py-1 text-xs text-white"
+                  >
+                    Promote Manager
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handlePromote(user._id, "admin")}
+                    className="rounded-md bg-indigo-600 px-2 py-1 text-xs text-white"
+                  >
+                    Promote Admin
+                  </button>
+                  <TiDelete onClick={()=>handleremove(user._id)} className="text-red-600 text-2xl" />
+                </div>
               </div>
             ))
           ) : (

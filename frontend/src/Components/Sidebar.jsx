@@ -38,7 +38,6 @@ function Sidebar() {
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
       { label: "Notifications", icon: <IoNotificationsOutline className="text-lg" />, to: `${basePath}/NotificationPageRead` },
       { label: "Category", icon: <MdOutlineCategory className="text-lg" />, to: `${basePath}/category` },
-      { label: "Users", icon: <LuUsers className="text-lg" />, to: `${basePath}/Userstatus` },
     ],
     admin: [
       { label: "Product", icon: <AiOutlineProduct className="text-lg" />, to: `${basePath}/product` },
@@ -49,11 +48,10 @@ function Sidebar() {
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
       { label: "Create Notifications", icon: <IoNotificationsOutline className="text-lg" />, to: `${basePath}/notifications` },
       { label: "Category", icon: <MdOutlineCategory className="text-lg" />, to: `${basePath}/category` },
+      { label: "Users", icon: <LuUsers className="text-lg" />, to: `${basePath}/Userstatus` },
     ],
     staff: [
       { label: "Product", icon: <AiOutlineProduct className="text-lg" />, to: `${basePath}/product` },
-      { label: "Activity Log", icon: <RxActivityLog className="text-lg" />, to: `${basePath}/activity-log` },
-      { label: "Supplier", icon: <TfiSupport className="text-lg" />, to: `${basePath}/supplier` },
       { label: "Sales", icon: <MdPointOfSale className="text-lg" />, to: `${basePath}/sales` },
       { label: "Order", icon: <FiShoppingCart className="text-lg" />, to: `${basePath}/order` },
       { label: "Stock Transaction", icon: <RiStockLine className="text-lg" />, to: `${basePath}/stock-transaction` },
@@ -84,7 +82,7 @@ function Sidebar() {
   return (
     <aside className="sidebar-shell flex h-screen w-72 flex-col border-r border-slate-200 bg-white/90 p-5 shadow-xl backdrop-blur">
       <div className="sidebar-logo-box rounded-2xl border border-slate-200 bg-slate-50 p-3">
-        <img src={logo1} className='sidebar-logo-image w-full rounded-lg bg-white p-2' alt="inventory logo" />
+        <img src={logo1} className='sidebar-logo-image mx-auto w-5/6 rounded-lg bg-white p-2' alt="inventory logo" />
       </div>
 
       <div className="mt-6 rounded-2xl bg-gradient-to-r from-teal-700 to-cyan-700 px-4 py-3 text-white">

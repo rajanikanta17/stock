@@ -18,7 +18,7 @@ function SignupPage() {
       .string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
-    role: yup.string().required("Role is required"),
+    role: yup.string().oneOf(["staff"]).required("Role is required"),
   });
 
   const {
@@ -27,19 +27,16 @@ function SignupPage() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      role: "staff",
+    },
   });
 
   const onSubmit = (data) => {
     dispatch(signup(data))
       .unwrap()
       .then(() => {
-        if (data.role === "staff") {
-          navigator("/StaffDashboard");
-        } else if (data.role === "admin") {
-          navigator("/AdminDashboard");
-        } else {
-          navigator("/ManagerDashboard");
-        }
+        navigator("/StaffDashboard");
       })
       .catch((error) => {
         console.error("Error in Signup:", error);
@@ -108,10 +105,9 @@ function SignupPage() {
               <select
                 {...register("role")}
                 className="mb-6 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-700 outline-none transition focus:border-cyan-500"
+                disabled
               >
                 <option value="staff">Staff</option>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
               </select>
               {errors.role && <p className="mb-4 text-sm text-rose-500">{errors.role.message}</p>}
 

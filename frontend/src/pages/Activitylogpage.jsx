@@ -60,17 +60,17 @@ function Activitylogpage() {
             <tbody>
               {currentLogs.length > 0 ? (
                 currentLogs.map((log, index) => (
-                  <tr key={log._id}>
+                  <tr key={log._id || `${log.createdAt}-${index}`}>
                     <td className="px-3 py-2 border">{indexOfFirstLog + index + 1}</td>
-                    <td className="px-3 py-2 border">{log.userId.name}</td>
-                    <td className="px-3 py-2 border">{log.userId.email}</td>
-                    <td className="px-3 py-2 border">{log.action}</td>
-                    <td className="px-3 py-2 border">{log.entity}</td>
-                    <td className="px-3 py-2 border">{log.description}</td>
+                    <td className="px-3 py-2 border">{log.userId?.name || "Unknown User"}</td>
+                    <td className="px-3 py-2 border">{log.userId?.email || "N/A"}</td>
+                    <td className="px-3 py-2 border">{log.action || "N/A"}</td>
+                    <td className="px-3 py-2 border">{log.entity || "N/A"}</td>
+                    <td className="px-3 py-2 border">{log.description || "N/A"}</td>
                     <td className="px-4 py-2 border">
                       <FormattedTime timestamp={log.createdAt} />
                     </td>
-                    <td className="px-4 py-2 border">{log.ipAddress}</td>
+                    <td className="px-4 py-2 border">{log.ipAddress || "N/A"}</td>
                   </tr>
                 ))
               ) : (

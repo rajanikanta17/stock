@@ -7,7 +7,7 @@ function Navbar() {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center">
-          <img src={logo1} className='w-48 rounded-md bg-white p-1' alt="Inventory logo" />
+          <img src={logo1} className='w-40 rounded-md bg-white p-1' alt="Inventory logo" />
         </Link>
 
         <div className="flex items-center gap-3">

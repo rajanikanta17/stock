@@ -18,6 +18,7 @@ import Activitylogpage from "./pages/Activitylogpage";
 import Dashboardpage from "./pages/Dashboardpage";
 import Userstatus from "./pages/Userstatus";
 import NotificationPageRead from "./pages/Notificationpageread"
+import AdminOnlyNotice from "./pages/AdminOnlyNotice";
 import ProtectedRoute from "./lib/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 
@@ -74,7 +75,7 @@ function App() {
             />
             <Route
               path="Userstatus"
-              element={<ProtectedRoute element={<Userstatus />} />}
+              element={<ProtectedRoute element={<AdminOnlyNotice pageName="User Status" />} />}
             />
             <Route
               path="activity-log"
@@ -126,6 +127,10 @@ function App() {
               path="activity-log"
               element={<ProtectedRoute element={<Activitylogpage />} />}
             />
+            <Route
+              path="Userstatus"
+              element={<ProtectedRoute element={<Userstatus />} />}
+            />
           </Route>
 
           <Route
@@ -166,11 +171,11 @@ function App() {
             />
             <Route
               path="supplier"
-              element={<ProtectedRoute element={<Supplierpage />} />}
+              element={<ProtectedRoute element={<AdminOnlyNotice pageName="Supplier" />} />}
             />
             <Route
               path="activity-log"
-              element={<ProtectedRoute element={<Activitylogpage />} />}
+              element={<ProtectedRoute element={<AdminOnlyNotice pageName="Activity Log" />} />}
             />
           </Route>
         </Routes>
