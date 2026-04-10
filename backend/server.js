@@ -69,6 +69,13 @@ app.use('/api/sales', salesrouter);
 app.use('/api/supplier', supplierrouter);
 app.use("/api/stocktransaction", stocktransactionrouter);
 
+app.use('/api/*', (req, res) => {
+  res.status(404).json({
+    message: 'API route not found',
+    path: req.originalUrl,
+  });
+});
+
 
 
 
